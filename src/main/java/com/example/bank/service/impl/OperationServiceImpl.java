@@ -29,7 +29,12 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public OperationDTO createOperation(OperationDTO operationDTO) {
-
+        /*TODO:
+        * Get type -> get cost
+        * Get account -> get current balance
+        * set balance +- value +- cost
+        * return op
+        * */
         return DTOMapper.toOperationDTO(operationRepository.save(DTOMapper.toOperation(operationDTO)));
     }
 }
