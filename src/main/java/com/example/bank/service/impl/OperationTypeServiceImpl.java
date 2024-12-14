@@ -1,7 +1,7 @@
 package com.example.bank.service.impl;
 
 import com.example.bank.dto.OperationTypeDTO;
-import com.example.bank.mapper.DTOMapper;
+import com.example.bank.mapper.OperationTypeDTOMapper;
 import com.example.bank.repository.OperationTypeRepository;
 import com.example.bank.service.OperationTypeService;
 import org.springframework.stereotype.Service;
@@ -19,16 +19,16 @@ public class OperationTypeServiceImpl implements OperationTypeService {
 
     @Override
     public List<OperationTypeDTO> getAllOperationTypes() {
-        return operationTypeRepository.findAll().stream().map(DTOMapper::toOperationTypeDTO).collect(Collectors.toList());
+        return operationTypeRepository.findAll().stream().map(OperationTypeDTOMapper::toOperationTypeDTO).collect(Collectors.toList());
     }
 
     @Override
     public OperationTypeDTO getOperationTypeById(int id) {
-        return DTOMapper.toOperationTypeDTO(operationTypeRepository.findById(String.valueOf(id)).get());
+        return OperationTypeDTOMapper.toOperationTypeDTO(operationTypeRepository.findById(String.valueOf(id)).get());
     }
 
     @Override
     public OperationTypeDTO createOperationType(OperationTypeDTO operationTypeDTO) {
-        return DTOMapper.toOperationTypeDTO(operationTypeRepository.save(DTOMapper.toOperationType(operationTypeDTO)));
+        return OperationTypeDTOMapper.toOperationTypeDTO(operationTypeRepository.save(OperationTypeDTOMapper.toOperationType(operationTypeDTO)));
     }
 }

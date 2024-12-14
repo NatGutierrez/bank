@@ -1,5 +1,6 @@
 package com.example.bank.entity;
 
+import com.example.bank.utils.OperationAction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -18,6 +19,9 @@ public class OperationType {
     @Column(name = "cost", nullable = false)
     private float cost;
 
+    @Column(name = "action", nullable = false)
+    private OperationAction action;
+
     @Column(name = "operations")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "id", targetEntity = Operation.class)
     @JsonIgnore
@@ -25,10 +29,11 @@ public class OperationType {
 
     public OperationType() {}
 
-    public OperationType(int id, String name, float cost) {
+    public OperationType(int id, String name, float cost, OperationAction action) {
         this.id = id;
         this.name = name;
         this.cost = cost;
+        this.action = action;
     }
 
     public int getId() {
@@ -49,5 +54,13 @@ public class OperationType {
 
     public void setCost(float cost) {
         this.cost = cost;
+    }
+
+    public OperationAction getAction() {
+        return action;
+    }
+
+    public void setAction(OperationAction action) {
+        this.action = action;
     }
 }

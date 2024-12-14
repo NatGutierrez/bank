@@ -1,5 +1,7 @@
 package com.example.bank.dto;
 
+import com.example.bank.utils.OperationAction;
+
 public class OperationTypeDTO {
     private int id;
 
@@ -7,10 +9,13 @@ public class OperationTypeDTO {
 
     private float cost;
 
-    public OperationTypeDTO(int id, String name, float cost) {
+    private OperationAction action;
+
+    public OperationTypeDTO(int id, String name, float cost, OperationAction action) {
         this.id = id;
         this.name = name;
         this.cost = cost;
+        this.action = action;
     }
 
     public int getId() {
@@ -35,5 +40,13 @@ public class OperationTypeDTO {
 
     public void setCost(float cost) {
         this.cost = cost;
+    }
+
+    public OperationAction getAction() {
+        return action;
+    }
+
+    public void setAction(OperationAction action) {
+        this.action = action;
     }
 }

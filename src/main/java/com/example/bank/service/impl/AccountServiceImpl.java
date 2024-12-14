@@ -1,7 +1,7 @@
 package com.example.bank.service.impl;
 
 import com.example.bank.dto.AccountDTO;
-import com.example.bank.mapper.DTOMapper;
+import com.example.bank.mapper.AccountDTOMapper;
 import com.example.bank.repository.AccountRepository;
 import com.example.bank.service.AccountService;
 import org.springframework.stereotype.Service;
@@ -19,17 +19,17 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<AccountDTO> getAllAccounts() {
-        return accountRepository.findAll().stream().map(DTOMapper::toAccountDTO).collect(Collectors.toList());
+        return accountRepository.findAll().stream().map(AccountDTOMapper::toAccountDTO).collect(Collectors.toList());
     }
 
     @Override
     public AccountDTO getAccountById(int id) {
-        return DTOMapper.toAccountDTO(accountRepository.findById(String.valueOf(id)).get());
+        return AccountDTOMapper.toAccountDTO(accountRepository.findById(String.valueOf(id)).get());
     }
 
     @Override
     public AccountDTO createAccount(AccountDTO accountDTO) {
-        return DTOMapper.toAccountDTO(accountRepository.save(DTOMapper.toAccount(accountDTO)));
+        return AccountDTOMapper.toAccountDTO(accountRepository.save(AccountDTOMapper.toAccount(accountDTO)));
     }
 
     @Override

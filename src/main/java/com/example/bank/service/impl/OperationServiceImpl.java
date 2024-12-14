@@ -1,7 +1,7 @@
 package com.example.bank.service.impl;
 
 import com.example.bank.dto.OperationDTO;
-import com.example.bank.mapper.DTOMapper;
+import com.example.bank.mapper.OperationDTOMapper;
 import com.example.bank.repository.OperationRepository;
 import com.example.bank.service.OperationService;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,12 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public List<OperationDTO> getAllOperations() {
-        return operationRepository.findAll().stream().map(DTOMapper::toOperationDTO).collect(Collectors.toList());
+        return operationRepository.findAll().stream().map(OperationDTOMapper::toOperationDTO).collect(Collectors.toList());
     }
 
     @Override
     public OperationDTO getOperationById(int id) {
-        return DTOMapper.toOperationDTO(operationRepository.findById(String.valueOf(id)).get());
+        return OperationDTOMapper.toOperationDTO(operationRepository.findById(String.valueOf(id)).get());
     }
 
     @Override
@@ -35,6 +35,6 @@ public class OperationServiceImpl implements OperationService {
         * set balance +- value +- cost
         * return op
         * */
-        return DTOMapper.toOperationDTO(operationRepository.save(DTOMapper.toOperation(operationDTO)));
+        return OperationDTOMapper.toOperationDTO(operationRepository.save(OperationDTOMapper.toOperation(operationDTO)));
     }
 }
