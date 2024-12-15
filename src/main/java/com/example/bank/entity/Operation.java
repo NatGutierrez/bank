@@ -1,7 +1,10 @@
 package com.example.bank.entity;
 
+import com.example.bank.utils.operations.OperationType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "operation")
@@ -12,7 +15,7 @@ public class Operation {
     private int id;
 
     @Column(name = "value", nullable = false)
-    private float value;
+    private BigDecimal value;
 
     @JoinColumn(name = "type_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,7 +29,7 @@ public class Operation {
 
     public Operation() {}
 
-    public Operation(int id, float value, OperationType type, Account account) {
+    public Operation(int id, BigDecimal value, OperationType type, Account account) {
         this.id = id;
         this.value = value;
         this.type = type;
@@ -41,11 +44,11 @@ public class Operation {
         this.id = id;
     }
 
-    public float getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(float value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 

@@ -4,6 +4,7 @@ import com.example.bank.dto.AccountDTO;
 import com.example.bank.entity.Account;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class AccountDTOMapper {
     public static AccountDTO toAccountDTO(Account account) {
@@ -11,8 +12,7 @@ public class AccountDTOMapper {
                 account.getId(),
                 account.getHolder(),
                 account.getBalance(),
-                new ArrayList<>()
-                //account.getOperations().stream().map(DTOMapper::toOperationDTO).collect(Collectors.toList())
+                account.getOperations().stream().map(OperationDTOMapper::toOperationDTO).collect(Collectors.toList())
         );
     }
 
@@ -21,8 +21,7 @@ public class AccountDTOMapper {
                 accountDTO.getId(),
                 accountDTO.getHolder(),
                 accountDTO.getBalance(),
-                new ArrayList<>()
-                //accountDTO.getOperations().stream().map(DTOMapper::toOperation).collect(Collectors.toList())
+                accountDTO.getOperations().stream().map(OperationDTOMapper::toOperation).collect(Collectors.toList())
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.example.bank.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,13 +9,13 @@ public class AccountDTO {
 
     private String holder;
 
-    private float balance;
+    private BigDecimal balance;
 
     private List<OperationDTO> operations;
 
     public AccountDTO() {}
 
-    public AccountDTO(int id, String holder, float balance, List<OperationDTO> operations) {
+    public AccountDTO(int id, String holder, BigDecimal balance, List<OperationDTO> operations) {
         this.id = id;
         this.holder = holder;
         this.balance = balance;
@@ -37,11 +38,11 @@ public class AccountDTO {
         this.holder = holder;
     }
 
-    public float getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(float balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

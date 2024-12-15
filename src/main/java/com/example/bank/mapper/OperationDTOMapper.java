@@ -8,7 +8,7 @@ public class OperationDTOMapper {
         return new OperationDTO(
                 operation.getId(),
                 operation.getValue(),
-                OperationTypeDTOMapper.toOperationTypeDTO(operation.getType()),
+                operation.getType(),
                 AccountDTOMapper.toAccountDTO(operation.getAccount())
         );
     }
@@ -17,7 +17,7 @@ public class OperationDTOMapper {
         return new Operation(
                 operationDTO.getId(),
                 operationDTO.getValue(),
-                OperationTypeDTOMapper.toOperationType(operationDTO.getOperationType()),
+                operationDTO.getOperationType(),
                 AccountDTOMapper.toAccount(operationDTO.getAccount())
         );
     }

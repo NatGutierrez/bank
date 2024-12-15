@@ -1,17 +1,21 @@
 package com.example.bank.dto;
 
+import com.example.bank.utils.operations.OperationType;
+
+import java.math.BigDecimal;
+
 public class OperationDTO {
     private int id;
 
-    private float value;
+    private BigDecimal value;
 
-    private OperationTypeDTO operationType;
+    private OperationType operationType;
 
     private AccountDTO account;
 
     public OperationDTO() {}
 
-    public OperationDTO(int id, float value, OperationTypeDTO operationType, AccountDTO account) {
+    public OperationDTO(int id, BigDecimal value, OperationType operationType, AccountDTO account) {
         this.id = id;
         this.value = value;
         this.operationType = operationType;
@@ -26,19 +30,19 @@ public class OperationDTO {
         this.id = id;
     }
 
-    public float getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(float value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    public OperationTypeDTO getOperationType() {
+    public OperationType getOperationType() {
         return operationType;
     }
 
-    public void setOperationType(OperationTypeDTO operationType) {
+    public void setOperationType(OperationType operationType) {
         this.operationType = operationType;
     }
 
