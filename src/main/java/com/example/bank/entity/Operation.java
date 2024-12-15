@@ -1,6 +1,6 @@
 package com.example.bank.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class Operation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
 
     @Column(name = "value", nullable = false)
@@ -16,12 +16,12 @@ public class Operation {
 
     @JoinColumn(name = "type_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonBackReference
     private OperationType type;
 
     @JoinColumn(name = "account_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonBackReference
     private Account account;
 
     public Operation() {}

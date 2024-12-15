@@ -1,4 +1,4 @@
-package com.example.bank.utils;
+package com.example.bank.utils.operations;
 
 public enum OperationAction {
     DEBIT,

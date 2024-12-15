@@ -1,7 +1,6 @@
 package com.example.bank.controller;
 
 import com.example.bank.dto.OperationDTO;
-import com.example.bank.dto.OperationTypeDTO;
 import com.example.bank.service.OperationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

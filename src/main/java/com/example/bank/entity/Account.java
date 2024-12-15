@@ -1,6 +1,6 @@
 package com.example.bank.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
 
     @Column(name = "holder", nullable = false)
@@ -21,8 +21,8 @@ public class Account {
     private float balance;
 
     @Column(name = "operations")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id", cascade = CascadeType.REMOVE, targetEntity = Operation.class)
-    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id", targetEntity = Operation.class)
+    @JsonManagedReference
     private List<Operation> operations;
 
     public Account() {}
