@@ -12,7 +12,7 @@ public class AccountDTOMapper {
                 account.getId(),
                 account.getHolder(),
                 account.getBalance(),
-                account.getOperations().stream().map(OperationDTOMapper::toOperationDTO).collect(Collectors.toList())
+                account.getOperations().stream().map(OperationDTOMapper::toOperationDTO).toList()
         );
     }
 
@@ -21,7 +21,7 @@ public class AccountDTOMapper {
                 accountDTO.getId(),
                 accountDTO.getHolder(),
                 accountDTO.getBalance(),
-                accountDTO.getOperations().stream().map(OperationDTOMapper::toOperation).collect(Collectors.toList())
+                accountDTO.getOperations().stream().map(OperationDTOMapper::toOperation).toList()
         );
     }
 }

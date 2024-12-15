@@ -1,6 +1,7 @@
 package com.example.bank.mapper;
 
 import com.example.bank.dto.OperationDTO;
+import com.example.bank.entity.Account;
 import com.example.bank.entity.Operation;
 
 public class OperationDTOMapper {
@@ -9,7 +10,7 @@ public class OperationDTOMapper {
                 operation.getId(),
                 operation.getValue(),
                 operation.getType(),
-                AccountDTOMapper.toAccountDTO(operation.getAccount())
+                operation.getAccount().getId()
         );
     }
 
@@ -17,8 +18,17 @@ public class OperationDTOMapper {
         return new Operation(
                 operationDTO.getId(),
                 operationDTO.getValue(),
-                operationDTO.getOperationType(),
-                AccountDTOMapper.toAccount(operationDTO.getAccount())
+                operationDTO.getType(),
+                new Account(operationDTO.getAccountId())
+        );
+    }
+
+    public static Operation toOperation(OperationDTO operationDTO, Account account) {
+        return new Operation(
+                operationDTO.getId(),
+                operationDTO.getValue(),
+                operationDTO.getType(),
+                account
         );
     }
 }

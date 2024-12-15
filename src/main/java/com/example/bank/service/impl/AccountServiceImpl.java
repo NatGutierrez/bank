@@ -6,6 +6,7 @@ import com.example.bank.repository.AccountRepository;
 import com.example.bank.service.AccountService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDTO createAccount(AccountDTO accountDTO) {
+        accountDTO.setOperations(new ArrayList<>());
         return AccountDTOMapper.toAccountDTO(accountRepository.save(AccountDTOMapper.toAccount(accountDTO)));
     }
 

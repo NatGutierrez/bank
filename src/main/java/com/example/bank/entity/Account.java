@@ -21,12 +21,15 @@ public class Account {
     @Column(name = "balance", nullable = false)
     private BigDecimal balance;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account", targetEntity = Operation.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @Column(name = "operations")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id", targetEntity = Operation.class)
-    @JsonManagedReference
     private List<Operation> operations;
 
     public Account() {}
+
+    public Account(int id) {
+        this.id = id;
+    }
 
     public Account(int id, String holder, BigDecimal balance, List<Operation> operations) {
         this.id = id;

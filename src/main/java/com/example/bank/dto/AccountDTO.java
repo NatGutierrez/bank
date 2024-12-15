@@ -15,6 +15,12 @@ public class AccountDTO {
 
     public AccountDTO() {}
 
+    public AccountDTO(int id, String holder, BigDecimal balance) {
+        this.id = id;
+        this.holder = holder;
+        this.balance = balance;
+    }
+
     public AccountDTO(int id, String holder, BigDecimal balance, List<OperationDTO> operations) {
         this.id = id;
         this.holder = holder;

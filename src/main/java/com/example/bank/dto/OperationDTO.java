@@ -1,6 +1,6 @@
 package com.example.bank.dto;
 
-import com.example.bank.utils.operations.OperationType;
+import com.example.bank.utils.operations.OperationTypesEnum;
 
 import java.math.BigDecimal;
 
@@ -9,17 +9,17 @@ public class OperationDTO {
 
     private BigDecimal value;
 
-    private OperationType operationType;
+    private OperationTypesEnum type;
 
-    private AccountDTO account;
+    private int accountId;
 
     public OperationDTO() {}
 
-    public OperationDTO(int id, BigDecimal value, OperationType operationType, AccountDTO account) {
+    public OperationDTO(int id, BigDecimal value, OperationTypesEnum type, int accountId) {
         this.id = id;
         this.value = value;
-        this.operationType = operationType;
-        this.account = account;
+        this.type = type;
+        this.accountId = accountId;
     }
 
     public int getId() {
@@ -38,19 +38,19 @@ public class OperationDTO {
         this.value = value;
     }
 
-    public OperationType getOperationType() {
-        return operationType;
+    public OperationTypesEnum getType() {
+        return type;
     }
 
-    public void setOperationType(OperationType operationType) {
-        this.operationType = operationType;
+    public void setType(OperationTypesEnum type) {
+        this.type = type;
     }
 
-    public AccountDTO getAccount() {
-        return account;
+    public int getAccountId() {
+        return accountId;
     }
 
-    public void setAccount(AccountDTO account) {
-        this.account = account;
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 }
