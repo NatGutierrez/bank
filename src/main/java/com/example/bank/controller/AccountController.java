@@ -2,6 +2,7 @@ package com.example.bank.controller;
 
 import com.example.bank.dto.AccountDTO;
 import com.example.bank.service.AccountService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,8 @@ public class AccountController {
     public ResponseEntity<List<AccountDTO>> getAccounts() {
         var response = accountService.getAllAccounts();
         return response.isEmpty() ?
-                ResponseEntity.status(204).build() : // no content
-                ResponseEntity.status(200).body(response); // ok
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() : // 204
+                ResponseEntity.status(HttpStatus.OK).body(response); // 200
     }
 
     @GetMapping("/{id}")
@@ -36,7 +37,7 @@ public class AccountController {
     public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO) {
         var response = accountService.createAccount(accountDTO);
         return response != null ?
-                ResponseEntity.status(201).body(response) : // created
-                ResponseEntity.status(304).build(); // not modified
+                ResponseEntity.status(HttpStatus.CREATED).body(response) : // 201
+                ResponseEntity.status(HttpStatus.NOT_MODIFIED).build(); // 304
     }
 }
