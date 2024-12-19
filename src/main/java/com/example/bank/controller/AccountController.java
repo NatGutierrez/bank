@@ -2,6 +2,7 @@ package com.example.bank.controller;
 
 import com.example.bank.dto.AccountDTO;
 import com.example.bank.service.AccountService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @Operation(summary = "List all bank accounts.")
     @GetMapping
     public ResponseEntity<List<AccountDTO>> getAccounts() {
         var response = accountService.getAllAccounts();
@@ -25,6 +27,7 @@ public class AccountController {
                 ResponseEntity.status(HttpStatus.OK).body(response); // 200
     }
 
+    @Operation(summary = "Find a single bank account by its id.")
     @GetMapping("/{id}")
     public AccountDTO getAccountById(@PathVariable int id) {
         return accountService.getAccountById(id);
@@ -33,6 +36,7 @@ public class AccountController {
                 ResponseEntity.status(200).body(response); // ok*/
     }
 
+    @Operation(summary = "Create a bank account.")
     @PostMapping
     public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO) {
         var response = accountService.createAccount(accountDTO);

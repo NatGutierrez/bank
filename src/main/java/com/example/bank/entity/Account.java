@@ -1,27 +1,19 @@
 package com.example.bank.entity;
 
-import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.annotation.Id;
 
-@Entity
-@Table(name = "account")
+@Document(collection = "accounts")
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "holder", nullable = false)
     private String holder;
 
-    @Column(name = "balance", nullable = false)
     private BigDecimal balance;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account", targetEntity = Operation.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "operations")
     private List<Operation> operations;
 
     public Account() {}

@@ -2,6 +2,7 @@ package com.example.bank.controller;
 
 import com.example.bank.dto.OperationDTO;
 import com.example.bank.service.OperationService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ public class OperationController {
         this.operationService = operationService;
     }
 
+    @Operation(summary = "List all operations.")
     @GetMapping
     public ResponseEntity<List<OperationDTO>> getOperations() {
         var response = operationService.getAllOperations();
@@ -24,6 +26,7 @@ public class OperationController {
                 ResponseEntity.status(200).body(response); // ok
     }
 
+    @Operation(summary = "Find a single operation by its id.")
     @GetMapping("/{id}")
     public OperationDTO getOperationById(@PathVariable int id) {
         return operationService.getOperationById(id);
@@ -32,6 +35,7 @@ public class OperationController {
                 ResponseEntity.status(200).body(response); // ok*/
     }
 
+    @Operation(summary = "Create an operation.")
     @PostMapping
     public ResponseEntity<OperationDTO> createOperation(@RequestBody OperationDTO operationDTO) {
         var response = operationService.createOperation(operationDTO);
