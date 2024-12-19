@@ -28,7 +28,7 @@ public class OperationController {
 
     @Operation(summary = "Find a single operation by its id.")
     @GetMapping("/{id}")
-    public OperationDTO getOperationById(@PathVariable int id) {
+    public OperationDTO getOperationById(@PathVariable String id) {
         return operationService.getOperationById(id);
         /*return response.isEmpty() ?
                 ResponseEntity.status(204).build() : // no content

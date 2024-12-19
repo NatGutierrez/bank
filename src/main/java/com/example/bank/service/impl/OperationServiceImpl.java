@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,8 +32,8 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public OperationDTO getOperationById(int id) {
-        return OperationDTOMapper.toOperationDTO(operationRepository.findById(String.valueOf(id)).get());
+    public OperationDTO getOperationById(String id) {
+        return OperationDTOMapper.toOperationDTO(operationRepository.findById(id).get());
     }
 
     @Override

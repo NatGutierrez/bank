@@ -1,9 +1,9 @@
 package com.example.bank.repository;
 
 import com.example.bank.entity.Operation;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OperationRepository extends JpaRepository <Operation, String> {
+public interface OperationRepository extends MongoRepository<Operation, String> {
 }

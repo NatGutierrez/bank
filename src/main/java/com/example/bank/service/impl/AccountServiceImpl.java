@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,16 +25,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO getAccountById(int id) {
-        return AccountDTOMapper.toAccountDTO(accountRepository.findById(String.valueOf(id)).get());
+    public AccountDTO getAccountById(String id) {
+        return AccountDTOMapper.toAccountDTO(accountRepository.findById(id).get());
     }
 
     @Override
     public AccountDTO createAccount(AccountDTO accountDTO) {
+        accountDTO.setId(UUID.randomUUID().toString().substring(0,9));
         accountDTO.setOperations(new ArrayList<>());
         return AccountDTOMapper.toAccountDTO(accountRepository.save(AccountDTOMapper.toAccount(accountDTO)));
     }
-
-    @Override
-    public void deleteAccount(int id) {}
 }

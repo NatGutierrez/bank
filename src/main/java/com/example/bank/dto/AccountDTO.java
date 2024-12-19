@@ -3,9 +3,10 @@ package com.example.bank.dto;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class AccountDTO {
-    private int id;
+    private String id;
 
     private String holder;
 
@@ -15,24 +16,24 @@ public class AccountDTO {
 
     public AccountDTO() {}
 
-    public AccountDTO(int id, String holder, BigDecimal balance) {
-        this.id = id;
+    public AccountDTO(String holder, BigDecimal balance) {
+        this.id = UUID.randomUUID().toString().substring(0,9);
         this.holder = holder;
         this.balance = balance;
     }
 
-    public AccountDTO(int id, String holder, BigDecimal balance, List<OperationDTO> operations) {
+    public AccountDTO(String id, String holder, BigDecimal balance, List<OperationDTO> operations) {
         this.id = id;
         this.holder = holder;
         this.balance = balance;
         this.operations = new ArrayList<>(operations);
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

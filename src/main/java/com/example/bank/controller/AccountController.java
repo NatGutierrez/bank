@@ -29,7 +29,7 @@ public class AccountController {
 
     @Operation(summary = "Find a single bank account by its id.")
     @GetMapping("/{id}")
-    public AccountDTO getAccountById(@PathVariable int id) {
+    public AccountDTO getAccountById(@PathVariable String id) {
         return accountService.getAccountById(id);
         /*return response.isEmpty() ?
                 ResponseEntity.status(204).build() : // no content

@@ -4,11 +4,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "accounts")
 public class Account {
     @Id
-    private int id;
+    private String id;
 
     private String holder;
 
@@ -18,22 +19,22 @@ public class Account {
 
     public Account() {}
 
-    public Account(int id) {
+    public Account(String id) {
         this.id = id;
     }
 
-    public Account(int id, String holder, BigDecimal balance, List<Operation> operations) {
+    public Account(String id, String holder, BigDecimal balance, List<Operation> operations) {
         this.id = id;
         this.holder = holder;
         this.balance = balance;
         this.operations = new ArrayList<>(operations);
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
