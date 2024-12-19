@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "accounts")
@@ -15,6 +16,7 @@ public class Account {
 
     private BigDecimal balance;
 
+    @DBRef
     private List<Operation> operations;
 
     public Account() {}
