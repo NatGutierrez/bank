@@ -7,10 +7,8 @@ import java.util.List;
 
 public interface OperationService {
     List<OperationDTO> getAllOperations();
-    OperationDTO getOperationById(int id);
+    OperationDTO getOperationById(String id);
     OperationDTO createOperation(OperationDTO operationDTO);
     private Operation applyOperation(Operation operation) { return operation; };
     void revertOperation(int id);
 }
-
-

@@ -44,9 +44,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleNoSuchElementException(NoSuchElementException ex) {
         Map<String, String> err = new HashMap<>();
         err.put("message", "No such element. " + ex.getMessage());
-        err.put("status", HttpStatus.NOT_FOUND.toString()); //400
+        err.put("status", HttpStatus.NOT_FOUND.toString()); //404
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -55,6 +55,6 @@ public class GlobalExceptionHandler {
         err.put("message", "HTTP Request method not allowed. " + ex.getMessage());
         err.put("status", HttpStatus.METHOD_NOT_ALLOWED.toString()); //400
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(err);
     }
 }

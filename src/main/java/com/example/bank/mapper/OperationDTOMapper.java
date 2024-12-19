@@ -7,7 +7,6 @@ import com.example.bank.entity.Operation;
 public class OperationDTOMapper {
     public static OperationDTO toOperationDTO(Operation operation) {
         return new OperationDTO(
-                operation.getId(),
                 operation.getValue(),
                 operation.getType(),
                 operation.getAccount().getId()
