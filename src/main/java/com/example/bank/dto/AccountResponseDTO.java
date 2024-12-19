@@ -3,7 +3,6 @@ package com.example.bank.dto;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class AccountResponseDTO {
     private String id;
@@ -12,11 +11,11 @@ public class AccountResponseDTO {
 
     private BigDecimal balance;
 
-    private List<OperationDTO> operations;
+    private List<OperationResponseDTO> operations;
 
     public AccountResponseDTO() {}
 
-    public AccountResponseDTO(String id, String holder, BigDecimal balance, List<OperationDTO> operations) {
+    public AccountResponseDTO(String id, String holder, BigDecimal balance, List<OperationResponseDTO> operations) {
         this.id = id;
         this.holder = holder;
         this.balance = balance;
@@ -47,11 +46,11 @@ public class AccountResponseDTO {
         this.balance = balance;
     }
 
-    public List<OperationDTO> getOperations() {
+    public List<OperationResponseDTO> getOperations() {
         return operations;
     }
 
-    public void setOperations(List<OperationDTO> operations) {
+    public void setOperations(List<OperationResponseDTO> operations) {
         this.operations = operations;
     }
 }

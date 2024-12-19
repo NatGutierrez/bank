@@ -1,6 +1,7 @@
 package com.example.bank.controller;
 
-import com.example.bank.dto.OperationDTO;
+import com.example.bank.dto.OperationRequestDTO;
+import com.example.bank.dto.OperationResponseDTO;
 import com.example.bank.service.OperationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,7 +29,7 @@ public class OperationController {
             @ApiResponse(responseCode = "204", description = "No operations to get.")
     })
     @GetMapping
-    public ResponseEntity<List<OperationDTO>> getOperations() {
+    public ResponseEntity<List<OperationResponseDTO>> getOperations() {
         var response = operationService.getAllOperations();
         return response.isEmpty() ?
                 ResponseEntity.status(204).build() : // no content
@@ -41,7 +42,7 @@ public class OperationController {
             @ApiResponse(responseCode = "404", description = "Operation not found.")
     })
     @GetMapping("/{id}")
-    public OperationDTO getOperationById(@PathVariable String id) {
+    public OperationResponseDTO getOperationById(@PathVariable String id) {
         return operationService.getOperationById(id);
         /*return response.isEmpty() ?
                 ResponseEntity.status(204).build() : // no content
@@ -53,7 +54,7 @@ public class OperationController {
             @ApiResponse(responseCode = "201", description = "Successfully created operation.")
     })
     @PostMapping
-    public ResponseEntity<OperationDTO> createOperation(@Valid @RequestBody OperationDTO operationDTO) {
+    public ResponseEntity<OperationResponseDTO> createOperation(@Valid @RequestBody OperationRequestDTO operationDTO) {
         var response = operationService.createOperation(operationDTO);
         return response != null ?
                 ResponseEntity.status(201).body(response) : // created

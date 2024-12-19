@@ -12,7 +12,7 @@ public class AccountRequestDTO {
 
     private BigDecimal balance;
 
-    private List<OperationDTO> operations;
+    private List<OperationRequestDTO> operations;
 
     public void init() {
         this.id = UUID.randomUUID().toString().substring(0,9);
@@ -59,11 +59,11 @@ public class AccountRequestDTO {
         this.balance = balance;
     }
 
-    public List<OperationDTO> getOperations() {
+    public List<OperationRequestDTO> getOperations() {
         return operations;
     }
 
-    public void setOperations(List<OperationDTO> operations) {
+    public void setOperations(List<OperationRequestDTO> operations) {
         this.operations = operations;
     }
 }

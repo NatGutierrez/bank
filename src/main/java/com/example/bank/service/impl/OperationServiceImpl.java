@@ -1,6 +1,7 @@
 package com.example.bank.service.impl;
 
-import com.example.bank.dto.OperationDTO;
+import com.example.bank.dto.OperationRequestDTO;
+import com.example.bank.dto.OperationResponseDTO;
 import com.example.bank.entity.Account;
 import com.example.bank.entity.Operation;
 import com.example.bank.mapper.OperationDTOMapper;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,17 +27,17 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public List<OperationDTO> getAllOperations() {
+    public List<OperationResponseDTO> getAllOperations() {
         return operationRepository.findAll().stream().map(OperationDTOMapper::toOperationDTO).collect(Collectors.toList());
     }
 
     @Override
-    public OperationDTO getOperationById(String id) {
+    public OperationResponseDTO getOperationById(String id) {
         return OperationDTOMapper.toOperationDTO(operationRepository.findById(id).get());
     }
 
     @Override
-    public OperationDTO createOperation(OperationDTO operationDTO) {
+    public OperationResponseDTO createOperation(OperationRequestDTO operationDTO) {
         Account account = accountRepository.getAccountById(operationDTO.getAccountId());
         Operation op = applyOperation(OperationDTOMapper.toOperation(operationDTO, account));
         return OperationDTOMapper.toOperationDTO(operationRepository.save(op));

@@ -5,7 +5,7 @@ import com.example.bank.utils.operations.OperationTypesEnum;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class OperationDTO {
+public class OperationResponseDTO {
     private String id;
 
     private BigDecimal value;
@@ -14,9 +14,9 @@ public class OperationDTO {
 
     private String accountId;
 
-    public OperationDTO() {}
+    public OperationResponseDTO() {}
 
-    public OperationDTO(BigDecimal value, OperationTypesEnum type, String accountId) {
+    public OperationResponseDTO(BigDecimal value, OperationTypesEnum type, String accountId) {
         this.id = UUID.randomUUID().toString().substring(0,8);
         this.value = value;
         this.type = type;
