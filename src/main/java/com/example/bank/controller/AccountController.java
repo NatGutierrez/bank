@@ -1,6 +1,7 @@
 package com.example.bank.controller;
 
-import com.example.bank.dto.AccountDTO;
+import com.example.bank.dto.AccountRequestDTO;
+import com.example.bank.dto.AccountResponseDTO;
 import com.example.bank.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,7 +30,7 @@ public class AccountController {
             @ApiResponse(responseCode = "204", description = "No accounts to get.")
     })
     @GetMapping
-    public ResponseEntity<List<AccountDTO>> getAccounts() {
+    public ResponseEntity<List<AccountResponseDTO>> getAccounts() {
         var response = accountService.getAllAccounts();
         return response.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() : // 204
@@ -42,7 +43,7 @@ public class AccountController {
             @ApiResponse(responseCode = "404", description = "Account not found.")
     })
     @GetMapping("/{id}")
-    public AccountDTO getAccountById(@PathVariable String id) {
+    public AccountResponseDTO getAccountById(@PathVariable String id) {
         return accountService.getAccountById(id);
         /*return response.isEmpty() ?
                 ResponseEntity.status(204).build() : // no content
@@ -54,7 +55,7 @@ public class AccountController {
             @ApiResponse(responseCode = "201", description = "Successfully created account.")
     })
     @PostMapping
-    public ResponseEntity<AccountDTO> createAccount(@Valid @RequestBody AccountDTO accountDTO) {
+    public ResponseEntity<AccountResponseDTO> createAccount(@Valid @RequestBody AccountRequestDTO accountDTO) {
         var response = accountService.createAccount(accountDTO);
         return response != null ?
                 ResponseEntity.status(HttpStatus.CREATED).body(response) : // 201

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class AccountDTO {
+public class AccountRequestDTO {
     private String id;
 
     private String holder;
@@ -14,19 +14,25 @@ public class AccountDTO {
 
     private List<OperationDTO> operations;
 
-    public AccountDTO() {}
-
-    public AccountDTO(String holder, BigDecimal balance) {
+    public void init() {
         this.id = UUID.randomUUID().toString().substring(0,9);
-        this.holder = holder;
-        this.balance = balance;
+        this.balance = BigDecimal.ZERO;
+        this.operations = new ArrayList<>();
     }
 
-    public AccountDTO(String id, String holder, BigDecimal balance, List<OperationDTO> operations) {
-        this.id = id;
+    public AccountRequestDTO() {}
+
+    // Create with default balance
+    public AccountRequestDTO(String holder) {
+        this.init();
+        this.holder = holder;
+    }
+
+    // Create with custom balance
+    public AccountRequestDTO(String holder, BigDecimal balance) {
+        this.init();
         this.holder = holder;
         this.balance = balance;
-        this.operations = new ArrayList<>(operations);
     }
 
     public String getId() {

@@ -1,14 +1,12 @@
 package com.example.bank.mapper;
 
-import com.example.bank.dto.AccountDTO;
+import com.example.bank.dto.AccountRequestDTO;
+import com.example.bank.dto.AccountResponseDTO;
 import com.example.bank.entity.Account;
 
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-
 public class AccountDTOMapper {
-    public static AccountDTO toAccountDTO(Account account) {
-        return new AccountDTO(
+    public static AccountResponseDTO toAccountDTO(Account account) {
+        return new AccountResponseDTO(
                 account.getId(),
                 account.getHolder(),
                 account.getBalance(),
@@ -16,7 +14,7 @@ public class AccountDTOMapper {
         );
     }
 
-    public static Account toAccount(AccountDTO accountDTO) {
+    public static Account toAccount(AccountRequestDTO accountDTO) {
         return new Account(
                 accountDTO.getId(),
                 accountDTO.getHolder(),
