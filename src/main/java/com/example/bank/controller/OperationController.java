@@ -4,10 +4,14 @@ import com.example.bank.dto.OperationRequestDTO;
 import com.example.bank.dto.OperationResponseDTO;
 import com.example.bank.service.OperationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,26 +42,38 @@ public class OperationController {
 
     @Operation(summary = "Get Operation by id", description = "Find a single operation by its id.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Successfully obtained operation."),
-            @ApiResponse(responseCode = "404", description = "Operation not found.")
-    })
+            @ApiResponse(responseCode = "200", description = "Successfully obtained operation.",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OperationResponseDTO.class))
+            ),
+    @ApiResponse(
+            responseCode = "404", description = "Operation not found.",
+            content = @Content(mediaType = "application/json")
+    ),
+    @ApiResponse(
+            responseCode = "400", description = "Bad request. Validation error. Missing fields?",
+            content = @Content(mediaType = "application/json")
+    )    })
     @GetMapping("/{id}")
-    public OperationResponseDTO getOperationById(@PathVariable String id) {
-        return operationService.getOperationById(id);
-        /*return response.isEmpty() ?
-                ResponseEntity.status(204).build() : // no content
-                ResponseEntity.status(200).body(response); // ok*/
+    public ResponseEntity<OperationResponseDTO> getOperationById(
+            @Parameter(description = "ID of the operation to retrieve", required = true, example = "e20c4fbb")
+            @PathVariable String id) {
+        var response = operationService.getOperationById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Create new Operation", description = "Create a new operation.")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Successfully created operation.")
+            @ApiResponse(responseCode = "201", description = "Successfully created operation.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = OperationResponseDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400", description = "Bad request. Validation error. Missing fields?",
+                    content = @Content(mediaType = "application/json")
+            )
     })
     @PostMapping
     public ResponseEntity<OperationResponseDTO> createOperation(@Valid @RequestBody OperationRequestDTO operationDTO) {
         var response = operationService.createOperation(operationDTO);
-        return response != null ?
-                ResponseEntity.status(201).body(response) : // created
-                ResponseEntity.status(304).build(); // not modified
+        return new ResponseEntity<>(response, HttpStatus.CREATED); // 201
     }
 }

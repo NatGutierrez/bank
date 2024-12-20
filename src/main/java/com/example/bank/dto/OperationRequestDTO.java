@@ -1,17 +1,22 @@
 package com.example.bank.dto;
 
 import com.example.bank.utils.operations.OperationTypesEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class OperationRequestDTO {
+    @Schema(description = "Id of operation", example = "e20c4fbb", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String id;
 
+    @Schema(description = "Cash value of operation", example = "150", requiredMode = Schema.RequiredMode.REQUIRED)
     private BigDecimal value;
 
+    @Schema(description = "Type of operation", example = "ATM_DEPOSIT", requiredMode = Schema.RequiredMode.REQUIRED)
     private OperationTypesEnum type;
 
+    @Schema(description = "Id of account associated to operation", example = "27afdfd5-", requiredMode = Schema.RequiredMode.REQUIRED)
     private String accountId;
 
     public OperationRequestDTO() {}
