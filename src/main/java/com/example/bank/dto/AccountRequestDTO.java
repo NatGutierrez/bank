@@ -1,17 +1,23 @@
 package com.example.bank.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class AccountRequestDTO {
+    @Schema(description = "Id of account", example = "27afdfd5-", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String id;
 
+    @Schema(description = "Account holder's name", example = "Nat", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String holder;
 
+    @Schema(description = "Balance of account", example = "123", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private BigDecimal balance;
 
+    @Schema(description = "List of operation associated to account", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<OperationRequestDTO> operations;
 
     public void init() {
