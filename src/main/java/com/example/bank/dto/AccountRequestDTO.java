@@ -21,7 +21,7 @@ public class AccountRequestDTO {
     private List<OperationRequestDTO> operations;
 
     public void init() {
-        this.id = UUID.randomUUID().toString().substring(0,9);
+        this.id = this.id == null ? UUID.randomUUID().toString().substring(0,9) : this.id;
         this.balance = BigDecimal.ZERO;
         this.operations = new ArrayList<>();
     }
