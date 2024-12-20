@@ -1,28 +1,27 @@
 package com.example.bank.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-public class AccountDTO {
+public class AccountResponseDTO {
+    @Schema(description = "Id of account")
     private String id;
 
+    @Schema(description = "Account holder's name")
     private String holder;
 
+    @Schema(description = "Balance of account")
     private BigDecimal balance;
 
-    private List<OperationDTO> operations;
+    @Schema(description = "List of operation associated to account")
+    private List<OperationResponseDTO> operations;
 
-    public AccountDTO() {}
+    public AccountResponseDTO() {}
 
-    public AccountDTO(String holder, BigDecimal balance) {
-        this.id = UUID.randomUUID().toString().substring(0,9);
-        this.holder = holder;
-        this.balance = balance;
-    }
-
-    public AccountDTO(String id, String holder, BigDecimal balance, List<OperationDTO> operations) {
+    public AccountResponseDTO(String id, String holder, BigDecimal balance, List<OperationResponseDTO> operations) {
         this.id = id;
         this.holder = holder;
         this.balance = balance;
@@ -53,11 +52,11 @@ public class AccountDTO {
         this.balance = balance;
     }
 
-    public List<OperationDTO> getOperations() {
+    public List<OperationResponseDTO> getOperations() {
         return operations;
     }
 
-    public void setOperations(List<OperationDTO> operations) {
+    public void setOperations(List<OperationResponseDTO> operations) {
         this.operations = operations;
     }
 }

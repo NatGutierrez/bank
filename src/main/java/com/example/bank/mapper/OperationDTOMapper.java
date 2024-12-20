@@ -1,19 +1,20 @@
 package com.example.bank.mapper;
 
-import com.example.bank.dto.OperationDTO;
+import com.example.bank.dto.OperationRequestDTO;
+import com.example.bank.dto.OperationResponseDTO;
 import com.example.bank.entity.Account;
 import com.example.bank.entity.Operation;
 
 public class OperationDTOMapper {
-    public static OperationDTO toOperationDTO(Operation operation) {
-        return new OperationDTO(
+    public static OperationResponseDTO toOperationDTO(Operation operation) {
+        return new OperationResponseDTO(
                 operation.getValue(),
                 operation.getType(),
                 operation.getAccount().getId()
         );
     }
 
-    public static Operation toOperation(OperationDTO operationDTO) {
+    public static Operation toOperation(OperationRequestDTO operationDTO) {
         return new Operation(
                 operationDTO.getId(),
                 operationDTO.getValue(),
@@ -22,7 +23,7 @@ public class OperationDTOMapper {
         );
     }
 
-    public static Operation toOperation(OperationDTO operationDTO, Account account) {
+    public static Operation toOperation(OperationRequestDTO operationDTO, Account account) {
         return new Operation(
                 operationDTO.getId(),
                 operationDTO.getValue(),
