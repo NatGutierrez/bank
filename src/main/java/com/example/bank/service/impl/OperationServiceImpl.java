@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,13 +34,13 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public OperationResponseDTO getOperationById(String id) {
-        return OperationDTOMapper.toOperationDTO(operationRepository.findById(id).get());
+        return OperationDTOMapper.toOperationDTO(operationRepository.findById(id).orElseThrow());
     }
 
     @Override
     public OperationResponseDTO createOperation(OperationRequestDTO operationDTO) {
-        Account account = accountRepository.getAccountById(operationDTO.getAccountId());
-        Operation op = applyOperation(OperationDTOMapper.toOperation(operationDTO, account));
+        Optional<Account> account = accountRepository.getAccountById(operationDTO.getAccountId());
+        Operation op = applyOperation(OperationDTOMapper.toOperation(operationDTO, account.orElseThrow()));
         return OperationDTOMapper.toOperationDTO(operationRepository.save(op));
     }
 

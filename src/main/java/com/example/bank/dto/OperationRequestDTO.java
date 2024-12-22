@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public class OperationRequestDTO {
-    @Schema(description = "Id of operation", example = "e20c4fbb", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Id of operation", example = "67688434778e5c3cf8860e97", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String id;
 
     @Schema(description = "Cash value of operation", example = "150", requiredMode = Schema.RequiredMode.REQUIRED)

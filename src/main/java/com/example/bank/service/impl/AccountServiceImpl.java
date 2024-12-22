@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponseDTO getAccountById(String id) {
-        return AccountDTOMapper.toAccountDTO(accountRepository.findById(id).get());
+        return AccountDTOMapper.toAccountDTO(accountRepository.findById(id).orElseThrow());
     }
 
     @Override
