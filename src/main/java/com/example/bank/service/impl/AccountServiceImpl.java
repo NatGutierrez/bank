@@ -27,12 +27,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponseDTO getAccountById(String id) {
-        return AccountDTOMapper.toAccountDTO(accountRepository.findById(id).get());
+        return AccountDTOMapper.toAccountDTO(accountRepository.findById(id).orElseThrow());
     }
 
     @Override
     public AccountResponseDTO createAccount(AccountRequestDTO accountDTO) {
-        accountDTO.init();
-        return AccountDTOMapper.toAccountDTO(accountRepository.save(AccountDTOMapper.toAccount(accountDTO)));
+        var acc = AccountDTOMapper.toAccount(new AccountRequestDTO(accountDTO.getHolder(), accountDTO.getBalance()));
+        return AccountDTOMapper.toAccountDTO(accountRepository.save(acc));
     }
 }

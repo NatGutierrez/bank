@@ -28,6 +28,13 @@ public class OperationResponseDTO {
         this.accountId = accountId;
     }
 
+    public OperationResponseDTO(String id, BigDecimal value, OperationTypesEnum type, String accountId) {
+        this.id = id;
+        this.value = value;
+        this.type = type;
+        this.accountId = accountId;
+    }
+
     public String getId() {
         return id;
     }
