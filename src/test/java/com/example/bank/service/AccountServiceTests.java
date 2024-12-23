@@ -10,12 +10,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,14 +35,14 @@ public class AccountServiceTests {
         AccountRequestDTO newAccount = new AccountRequestDTO("nat", BigDecimal.valueOf(0));
         String accountId = newAccount.getId();
 
-        Account account = new Account(accountId, "", BigDecimal.valueOf(0), new ArrayList<>());
+        Mono<Account> account = Mono.just(new Account(accountId, "", BigDecimal.valueOf(0), new ArrayList<>()));
 
         when(accountRepository.save(any(Account.class))).thenReturn(account);
 
-        AccountResponseDTO response = accountService.createAccount(newAccount);
+        Mono<AccountResponseDTO> response = accountService.createAccount(newAccount);
 
         assertNotNull(response);
-        assertEquals(accountId, response.getId());
+        assertEquals(accountId, response.block().getId());
     }
 
     @Test
@@ -51,26 +52,25 @@ public class AccountServiceTests {
                 new Account("2", "holder2", BigDecimal.valueOf(0), new ArrayList<>())
         );
 
-        when(accountRepository.findAll()).thenReturn(accounts);
+        when(accountRepository.findAll()).thenReturn(Flux.fromIterable(accounts));
 
         var response = accountService.getAllAccounts();
 
         assertNotNull(response);
-        assertEquals(2, response.size());
-        assertEquals("1", response.get(0).getId());
-        assertEquals("2", response.get(1).getId());
+        assertEquals(2, response.count().block());
+        assertEquals("1", response.elementAt(0).block().getId());
+        assertEquals("2", response.elementAt(1).block().getId());
     }
 
     @Test
     void getAllAccountsFail () {
         List<Account> accounts = new ArrayList<>();
 
-        when(accountRepository.findAll()).thenReturn(accounts);
+        when(accountRepository.findAll()).thenReturn(Flux.fromIterable(accounts));
 
         var response = accountService.getAllAccounts();
 
-        assertNotNull(response);
-        assertEquals(0, response.size());
+        StepVerifier.create(response).expectErrorMessage("No accounts found.").verify();
     }
 
     @Test
@@ -78,22 +78,22 @@ public class AccountServiceTests {
         String accountId = "1";
         Account account = new Account("1", "holder1", BigDecimal.valueOf(0), new ArrayList<>());
 
-        when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
+        when(accountRepository.findById(accountId)).thenReturn(Mono.just(account));
 
         var response = accountService.getAccountById(accountId);
 
         assertNotNull(response);
-        assertEquals(accountId, response.getId());
+        assertEquals(accountId, response.block().getId());
     }
 
     @Test
     void getAccountByIdFail () {
         String accountId = "2";
 
-        when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
+        when(accountRepository.findById(accountId)).thenReturn(Mono.empty());
 
-        var exception = assertThrows(NoSuchElementException.class, () -> accountService.getAccountById(accountId));
+        var response = accountService.getAccountById(accountId);
 
-        assertEquals("No value present", exception.getMessage());
+        StepVerifier.create(response).expectErrorMessage("Account not found.").verify();
     }
 }

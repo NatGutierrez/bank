@@ -4,7 +4,7 @@ import com.example.bank.dto.OperationRequestDTO;
 import com.example.bank.dto.OperationResponseDTO;
 import com.example.bank.entity.Account;
 import com.example.bank.entity.Operation;
-import com.example.bank.mapper.OperationDTOMapper;
+import com.example.bank.mapper.OperationMapper;
 import com.example.bank.repository.AccountRepository;
 import com.example.bank.repository.OperationRepository;
 import com.example.bank.service.impl.OperationServiceImpl;
@@ -15,6 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -50,30 +53,13 @@ public class OperationServiceTests {
 
         String operationId = newOperation.getId();
 
-        when(accountRepository.getAccountById(accountId)).thenReturn(Optional.of(account));
-        when(operationRepository.save(any(Operation.class))).thenReturn(OperationDTOMapper.toOperation(newOperation, account));
+        when(accountRepository.getAccountById(accountId)).thenReturn(Mono.just(account));
+        when(operationRepository.save(any(Operation.class))).thenReturn(Mono.just(OperationMapper.toEntity(newOperation, account)));
 
-        OperationResponseDTO response = operationService.createOperation(newOperation);
+        Mono<OperationResponseDTO> response = operationService.createOperation(newOperation);
 
         assertNotNull(response);
-        assertEquals(operationId, response.getId());
-    }
-
-
-    @Test
-    void operationCreatedFail() {
-        String accountId = "2";
-
-        OperationRequestDTO newOperation = new OperationRequestDTO(
-                BigDecimal.valueOf(100),
-                OperationTypesEnum.ACCOUNT_DEPOSIT,
-                accountId
-        );
-
-        Mockito.lenient().when(accountRepository.getAccountById(accountId)).thenReturn(Optional.empty());
-        Mockito.lenient().when(operationRepository.save(any(Operation.class))).thenReturn(OperationDTOMapper.toOperation(newOperation));
-
-        assertThrows(NoSuchElementException.class, () -> operationService.createOperation(newOperation));
+        assertEquals(operationId, response.block().getId());
     }
 
     @Test
@@ -84,26 +70,25 @@ public class OperationServiceTests {
                 new Operation("2", BigDecimal.valueOf(200), OperationTypesEnum.ACCOUNT_DEPOSIT, account)
         );
 
-        when(operationRepository.findAll()).thenReturn(operations);
+        when(operationRepository.findAll()).thenReturn(Flux.fromIterable(operations));
 
         var response = operationService.getAllOperations();
 
         assertNotNull(response);
-        assertEquals(2, response.size());
-        assertEquals("1", response.get(0).getId());
-        assertEquals("2", response.get(1).getId());
+        assertEquals(2, response.count().block());
+        assertEquals("1", response.elementAt(0).block().getId());
+        assertEquals("2", response.elementAt(1).block().getId());
     }
 
     @Test
     void getAllOperationsFail() {
         List<Operation> operations = new ArrayList<>();
 
-        when(operationRepository.findAll()).thenReturn(operations);
+        when(operationRepository.findAll()).thenReturn(Flux.fromIterable(operations));
 
         var response = operationService.getAllOperations();
 
-        assertNotNull(response);
-        assertEquals(0, response.size());
+        StepVerifier.create(response).expectErrorMessage("No operations found.").verify();
     }
 
     @Test
@@ -112,22 +97,22 @@ public class OperationServiceTests {
         String operationId = "1";
         Operation operation = new Operation(operationId, BigDecimal.valueOf(100), OperationTypesEnum.ACCOUNT_DEPOSIT, account);
 
-        when(operationRepository.findById(operationId)).thenReturn(Optional.of(operation));
+        when(operationRepository.findById(operationId)).thenReturn(Mono.just(operation));
 
         var response = operationService.getOperationById(operationId);
 
         assertNotNull(response);
-        assertEquals(operationId, response.getId());
+        assertEquals(operationId, response.block().getId());
     }
 
     @Test
     void getOperationByIdFail() {
-        String operationId = "2";
+        String accountId = "2";
 
-        when(operationRepository.findById(operationId)).thenReturn(Optional.empty());
+        when(operationRepository.findById(accountId)).thenReturn(Mono.empty());
 
-        var exception = assertThrows(NoSuchElementException.class, () -> operationService.getOperationById(operationId));
+        var response = operationService.getOperationById(accountId);
 
-        assertEquals("No value present", exception.getMessage());
+        StepVerifier.create(response).expectErrorMessage("Operation not found.").verify();
     }
 }

@@ -1,12 +1,11 @@
 package com.example.bank.repository;
 
 import com.example.bank.entity.Account;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 @Repository
-public interface AccountRepository extends MongoRepository<Account, String> {
-    Optional<Account> getAccountById(String id);
+public interface AccountRepository extends ReactiveMongoRepository<Account, String> {
+    Mono<Account> getAccountById(String id);
 }

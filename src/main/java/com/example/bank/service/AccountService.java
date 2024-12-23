@@ -2,11 +2,11 @@ package com.example.bank.service;
 
 import com.example.bank.dto.AccountRequestDTO;
 import com.example.bank.dto.AccountResponseDTO;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface AccountService {
-    List<AccountResponseDTO> getAllAccounts();
-    AccountResponseDTO getAccountById(String id);
-    AccountResponseDTO createAccount(AccountRequestDTO accountDTO);
+    Flux<AccountResponseDTO> getAllAccounts();
+    Mono<AccountResponseDTO> getAccountById(String id);
+    Mono<AccountResponseDTO> createAccount(AccountRequestDTO accountDTO);
 }

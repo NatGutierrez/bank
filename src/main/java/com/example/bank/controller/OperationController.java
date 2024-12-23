@@ -11,9 +11,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -33,11 +33,10 @@ public class OperationController {
             @ApiResponse(responseCode = "204", description = "No operations to get.")
     })
     @GetMapping
-    public ResponseEntity<List<OperationResponseDTO>> getOperations() {
-        var response = operationService.getAllOperations();
-        return response.isEmpty() ?
-                ResponseEntity.status(204).build() : // no content
-                ResponseEntity.status(200).body(response); // ok
+    public Mono<ResponseEntity<List<OperationResponseDTO>>> getOperations() {
+        return operationService.getAllOperations()
+                .collectList()
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Get Operation by id", description = "Find a single operation by its id.")
@@ -54,11 +53,11 @@ public class OperationController {
             content = @Content(mediaType = "application/json")
     )    })
     @GetMapping("/{id}")
-    public ResponseEntity<OperationResponseDTO> getOperationById(
+    public Mono<ResponseEntity<OperationResponseDTO>> getOperationById(
             @Parameter(description = "ID of the operation to retrieve", required = true, example = "e20c4fbb")
             @PathVariable String id) {
-        var response = operationService.getOperationById(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return operationService.getOperationById(id)
+                .map(res -> ResponseEntity.status(200).body(res));
     }
 
     @Operation(summary = "Create new Operation", description = "Create a new operation.")
@@ -72,8 +71,8 @@ public class OperationController {
             )
     })
     @PostMapping
-    public ResponseEntity<OperationResponseDTO> createOperation(@Valid @RequestBody OperationRequestDTO operationDTO) {
-        var response = operationService.createOperation(operationDTO);
-        return new ResponseEntity<>(response, HttpStatus.CREATED); // 201
+    public Mono<ResponseEntity<OperationResponseDTO>> createOperation(@Valid @RequestBody OperationRequestDTO operationDTO) {
+        return operationService.createOperation(operationDTO)
+                .map(res -> ResponseEntity.status(201).body(res));
     }
 }

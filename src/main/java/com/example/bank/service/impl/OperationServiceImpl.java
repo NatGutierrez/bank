@@ -4,17 +4,16 @@ import com.example.bank.dto.OperationRequestDTO;
 import com.example.bank.dto.OperationResponseDTO;
 import com.example.bank.entity.Account;
 import com.example.bank.entity.Operation;
-import com.example.bank.mapper.OperationDTOMapper;
+import com.example.bank.mapper.OperationMapper;
 import com.example.bank.repository.AccountRepository;
 import com.example.bank.repository.OperationRepository;
 import com.example.bank.service.OperationService;
 import com.example.bank.utils.operations.OperationType;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class OperationServiceImpl implements OperationService {
@@ -28,20 +27,28 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public List<OperationResponseDTO> getAllOperations() {
-        return operationRepository.findAll().stream().map(OperationDTOMapper::toOperationDTO).collect(Collectors.toList());
+    public Flux<OperationResponseDTO> getAllOperations() {
+        return operationRepository.findAll()
+                .map(OperationMapper::toDTO)
+                .switchIfEmpty(Flux.error(new RuntimeException("No operations found.")));
     }
 
     @Override
-    public OperationResponseDTO getOperationById(String id) {
-        return OperationDTOMapper.toOperationDTO(operationRepository.findById(id).orElseThrow());
+    public Mono<OperationResponseDTO> getOperationById(String id) {
+        return operationRepository.findById(id)
+                .map(OperationMapper::toDTO)
+                .switchIfEmpty(Mono.error(new RuntimeException("Operation not found.")));
     }
 
     @Override
-    public OperationResponseDTO createOperation(OperationRequestDTO operationDTO) {
-        Optional<Account> account = accountRepository.getAccountById(operationDTO.getAccountId());
-        Operation op = applyOperation(OperationDTOMapper.toOperation(operationDTO, account.orElseThrow()));
-        return OperationDTOMapper.toOperationDTO(operationRepository.save(op));
+    public Mono<OperationResponseDTO> createOperation(OperationRequestDTO operationDTO) {
+        return accountRepository.getAccountById(operationDTO.getAccountId())
+                .flatMap(acc -> {
+                    var op = applyOperation(OperationMapper.toEntity(operationDTO, acc));
+                    return operationRepository.save(op);
+                })
+                .map(OperationMapper::toDTO)
+                .switchIfEmpty(Mono.error(new RuntimeException("Account not found.")));
     }
 
     private Operation applyOperation(Operation op) {

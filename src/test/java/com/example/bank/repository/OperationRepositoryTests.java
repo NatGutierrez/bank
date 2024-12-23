@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -32,21 +34,21 @@ public class OperationRepositoryTests {
 
     @Test
     public void testSaveOperation() {
-        Operation savedAccount = operationRepository.save(operation);
-        assertEquals(account.getId(), savedAccount.getId());
+        Mono<Operation> savedAccount = operationRepository.save(operation);
+        assertEquals(account.getId(), savedAccount.block().getId());
     }
 
     @Test
     public void testFindAllOperations() {
-        List<Operation> operations = operationRepository.findAll();
+        Flux<Operation> operations = operationRepository.findAll();
         assertNotNull(operations);
     }
 
     @Test
     public void testFindOperationById() {
-        Operation savedOperation = operationRepository.save(operation);
-        Optional<Operation> foundOperation = operationRepository.findById(operation.getId());
+        Mono<Operation> savedOperation = operationRepository.save(operation);
+        Mono<Operation> foundOperation = operationRepository.findById(operation.getId());
         assertNotNull(foundOperation);
-        assertEquals(savedOperation.getId(), foundOperation.get().getId());
+        assertEquals(savedOperation.block().getId(), foundOperation.block().getId());
     }
 }
