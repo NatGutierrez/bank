@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,21 +30,21 @@ public class AccountRepositoryTests {
 
     @Test
     public void testSaveAccount() {
-        Account savedAccount = accountRepository.save(account);
-        assertEquals(account.getId(), savedAccount.getId());
+        Mono<Account> savedAccount = accountRepository.save(account);
+        assertEquals(account.getId(), savedAccount.block().getId());
     }
 
     @Test
     public void testFindAllAccounts() {
-        List<Account> accounts = accountRepository.findAll();
+        Flux<Account> accounts = accountRepository.findAll();
         assertNotNull(accounts);
     }
 
     @Test
     public void testFindAccountById() {
-        Account savedAccount = accountRepository.save(account);
-        Optional<Account> foundAccount = accountRepository.findById(account.getId());
+        Mono<Account> savedAccount = accountRepository.save(account);
+        Mono<Account> foundAccount = accountRepository.findById(account.getId());
         assertNotNull(foundAccount);
-        assertEquals(savedAccount.getId(), foundAccount.get().getId());
+        assertEquals(savedAccount.block().getId(), foundAccount.block().getId());
     }
 }
