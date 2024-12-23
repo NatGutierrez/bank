@@ -11,9 +11,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -43,11 +43,10 @@ public class AccountController {
             )
     })
     @GetMapping
-    public ResponseEntity<List<AccountResponseDTO>> getAccounts() {
-        var response = accountService.getAllAccounts();
-        return response.isEmpty() ?
-                ResponseEntity.status(HttpStatus.NO_CONTENT).build() : // 204
-                ResponseEntity.status(HttpStatus.OK).body(response); // 200
+    public Mono<ResponseEntity<List<AccountResponseDTO>>> getAccounts() {
+        return accountService.getAllAccounts()
+                .collectList()
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Get account by id", description = "Find a single bank account by its id.")
@@ -66,12 +65,12 @@ public class AccountController {
             )
     })
     @GetMapping("/{id}")
-    public ResponseEntity<AccountResponseDTO> getAccountById(
+    public Mono<ResponseEntity<AccountResponseDTO>> getAccountById(
             @Parameter(description = "ID of the account to retrieve", required = true, example = "3040cf52-")
             @PathVariable String id
     ) {
-        var response = accountService.getAccountById(id);
-        return new ResponseEntity<>(response, HttpStatus.OK); // 200
+        return accountService.getAccountById(id)
+                .map(res -> ResponseEntity.status(200).body(res));
     }
 
     @Operation(summary = "Create new account.", description = "Create a new bank account.")
@@ -86,8 +85,8 @@ public class AccountController {
             )
     })
     @PostMapping
-    public ResponseEntity<AccountResponseDTO> createAccount(@Valid @RequestBody AccountRequestDTO accountDTO) {
-        var response = accountService.createAccount(accountDTO);
-        return new ResponseEntity<>(response, HttpStatus.CREATED); // 201
+    public Mono<ResponseEntity<AccountResponseDTO>> createAccount(@Valid @RequestBody AccountRequestDTO accountDTO) {
+        return accountService.createAccount(accountDTO)
+                .map(res -> ResponseEntity.status(201).body(res));
     }
 }

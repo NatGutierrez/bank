@@ -4,7 +4,7 @@ import com.example.bank.dto.OperationRequestDTO;
 import com.example.bank.dto.OperationResponseDTO;
 import com.example.bank.entity.Account;
 import com.example.bank.entity.Operation;
-import com.example.bank.mapper.OperationDTOMapper;
+import com.example.bank.mapper.OperationMapper;
 import com.example.bank.repository.AccountRepository;
 import com.example.bank.repository.OperationRepository;
 import com.example.bank.service.impl.OperationServiceImpl;
@@ -51,7 +51,7 @@ public class OperationServiceTests {
         String operationId = newOperation.getId();
 
         when(accountRepository.getAccountById(accountId)).thenReturn(Optional.of(account));
-        when(operationRepository.save(any(Operation.class))).thenReturn(OperationDTOMapper.toOperation(newOperation, account));
+        when(operationRepository.save(any(Operation.class))).thenReturn(OperationMapper.toEntity(newOperation, account));
 
         OperationResponseDTO response = operationService.createOperation(newOperation);
 
@@ -71,7 +71,7 @@ public class OperationServiceTests {
         );
 
         Mockito.lenient().when(accountRepository.getAccountById(accountId)).thenReturn(Optional.empty());
-        Mockito.lenient().when(operationRepository.save(any(Operation.class))).thenReturn(OperationDTOMapper.toOperation(newOperation));
+        Mockito.lenient().when(operationRepository.save(any(Operation.class))).thenReturn(OperationMapper.toEntity(newOperation));
 
         assertThrows(NoSuchElementException.class, () -> operationService.createOperation(newOperation));
     }
