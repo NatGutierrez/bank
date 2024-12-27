@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
     @Bean
-    public OpenAPI custiomOpenAPI() {
+    public OpenAPI customOpenAPI() {
         return new OpenAPI().info(new Info()
                 .title("Bank API docs")
                 .version("0.1")

@@ -34,6 +34,9 @@ public class AccountRouter {
             @RouterOperation(
                     path = "/accounts",
                     method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE,
+                    beanClass = AccountHandler.class,
+                    beanMethod = "findAllAccounts",
                     operation = @Operation(summary = "Get Accounts", description = "List all bank accounts.",
                             responses = {
                                     @ApiResponse(
@@ -53,6 +56,9 @@ public class AccountRouter {
             @RouterOperation(
                     path = "accounts/{id}",
                     method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE,
+                    beanClass = AccountHandler.class,
+                    beanMethod = "findAccountById",
                     operation = @Operation(summary = "Get account by id", description = "Find a single bank account by its id.",
                             responses = {
                                     @ApiResponse(
@@ -72,6 +78,9 @@ public class AccountRouter {
             @RouterOperation(
                     path = "/accounts",
                     method = RequestMethod.POST,
+                    produces = MediaType.APPLICATION_JSON_VALUE,
+                    beanClass = AccountHandler.class,
+                    beanMethod = "createAccount",
                     operation = @Operation(summary = "Create new account.", description = "Create a new bank account.",
                             responses = {
                                     @ApiResponse(

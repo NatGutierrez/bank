@@ -37,6 +37,9 @@ public class OperationRouter {
             @RouterOperation(
                     path = "/operations",
                     method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE,
+                    beanClass = OperationHandler.class,
+                    beanMethod = "findAllOperations",
                     operation = @Operation(summary = "Get Operations", description = "List all operations.",
                             responses = {
                                     @ApiResponse(responseCode = "200", description = "Successfully obtained all operations."),
@@ -47,6 +50,9 @@ public class OperationRouter {
             @RouterOperation(
                     path = "/operations/{id}",
                     method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE,
+                    beanClass = OperationHandler.class,
+                    beanMethod = "findOperationById",
                     operation = @Operation(summary = "Get Operation by id", description = "Find a single operation by its id.",
                             responses = {
                                     @ApiResponse(responseCode = "200", description = "Successfully obtained operation.",
@@ -66,6 +72,9 @@ public class OperationRouter {
             @RouterOperation(
                     path = "/operations",
                     method = RequestMethod.POST,
+                    produces = MediaType.APPLICATION_JSON_VALUE,
+                    beanClass = OperationHandler.class,
+                    beanMethod = "createOperation",
                     operation = @Operation(summary = "Create new Operation", description = "Create a new operation.",
                             responses = {
                                     @ApiResponse(responseCode = "201", description = "Successfully created operation.",
