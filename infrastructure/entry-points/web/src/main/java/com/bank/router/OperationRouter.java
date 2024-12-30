@@ -2,8 +2,11 @@ package com.bank.router;
 
 import com.bank.data.OperationRequestDTO;
 import com.bank.data.OperationResponseDTO;
+import com.bank.exceptions.GlobalExceptionHandler;
 import com.bank.handler.OperationHandler;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,6 +57,14 @@ public class OperationRouter {
                     beanClass = OperationHandler.class,
                     beanMethod = "findOperationById",
                     operation = @Operation(summary = "Get Operation by id", description = "Find a single operation by its id.",
+                            parameters = {
+                                    @Parameter(
+                                            name = "id",
+                                            description = "The id of the operation to retrieve.",
+                                            required = true,
+                                            in = ParameterIn.PATH
+                                    )
+                            },
                             responses = {
                                     @ApiResponse(responseCode = "200", description = "Successfully obtained operation.",
                                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = OperationResponseDTO.class))
@@ -108,9 +119,10 @@ public class OperationRouter {
         String opId = request.pathVariable("id");
         return operationHandler.findOperationById(opId)
                 .flatMap(operationResponseDTO -> ServerResponse
-                .status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(operationResponseDTO));
+                        .status(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(operationResponseDTO))
+                        .switchIfEmpty(ServerResponse.notFound().build());
     }
 
     public Mono<ServerResponse> createOperation(ServerRequest request) {

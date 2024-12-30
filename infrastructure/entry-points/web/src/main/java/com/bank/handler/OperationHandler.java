@@ -7,11 +7,16 @@ import com.bank.mapper.OperationMapper;
 import com.bank.operation.CreateOperationUseCase;
 import com.bank.operation.FindAllOperationUseCase;
 import com.bank.operation.FindOperationByIdUseCase;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.NoSuchElementException;
+
 @Component
+@Validated
 public class OperationHandler {
     private final FindAllOperationUseCase findAllOperationUseCase;
 
@@ -30,15 +35,23 @@ public class OperationHandler {
     }
 
     public Flux<OperationResponseDTO> findAllOperations() {
-        return findAllOperationUseCase.apply().map(OperationMapper::toDTO);
+        return findAllOperationUseCase.apply()
+                .map(OperationMapper::toDTO)
+                .switchIfEmpty(Mono.error(new NoSuchElementException("No operations to list.")));
     }
 
     public Mono<OperationResponseDTO> findOperationById(String id) {
-        return findOperationByIdUseCase.apply(id).map(OperationMapper::toDTO);
+        if (id == null || id.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("Id cannot be null."));
+        }
+        return findOperationByIdUseCase.apply(id)
+                .map(OperationMapper::toDTO)
+                .switchIfEmpty(Mono.error(new NoSuchElementException("Operation with id " + id + " does not exist.")));
     }
 
-    public Mono<OperationResponseDTO> createOperation(OperationRequestDTO operationRequestDTO) {
+    public Mono<OperationResponseDTO> createOperation(@Valid OperationRequestDTO operationRequestDTO) {
         Operation op = OperationMapper.toEntity(operationRequestDTO);
-        return createOperationUseCase.apply(op).map(OperationMapper::toDTO);
+        return createOperationUseCase.apply(op)
+                .map(OperationMapper::toDTO);
     }
 }

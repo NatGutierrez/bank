@@ -4,6 +4,8 @@ import com.bank.data.AccountRequestDTO;
 import com.bank.data.AccountResponseDTO;
 import com.bank.handler.AccountHandler;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,12 +56,20 @@ public class AccountRouter {
                             }
                     )),
             @RouterOperation(
-                    path = "accounts/{id}",
+                    path = "/accounts/{id}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE,
                     beanClass = AccountHandler.class,
                     beanMethod = "findAccountById",
                     operation = @Operation(summary = "Get account by id", description = "Find a single bank account by its id.",
+                            parameters = {
+                                    @Parameter(
+                                            name = "id",
+                                            description = "The id of the account to retrieve.",
+                                            required = true,
+                                            in = ParameterIn.PATH
+                                    )
+                            },
                             responses = {
                                     @ApiResponse(
                                             responseCode = "200", description = "Successfully obtained account.",
@@ -98,7 +108,7 @@ public class AccountRouter {
     public RouterFunction<ServerResponse> accountRoutes() {
         return RouterFunctions
                 .route(GET("/accounts"), this::getAllAccounts)
-                .andRoute(GET("accounts/{id}"), this::getAccountById)
+                .andRoute(GET("/accounts/{id}"), this::getAccountById)
                 .andRoute(POST("/accounts").and(accept(MediaType.APPLICATION_JSON)), this::createAccount);
     }
 
@@ -117,7 +127,8 @@ public class AccountRouter {
         return accountHandler.findAccountById(accId).flatMap(accountResponseDTO -> ServerResponse
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(accountResponseDTO));
+                .bodyValue(accountResponseDTO))
+                .switchIfEmpty(ServerResponse.notFound().build());
     }
 
     public Mono<ServerResponse> createAccount(ServerRequest request) {

@@ -7,13 +7,16 @@ import com.bank.account.FindAllAccountsUseCase;
 import com.bank.data.AccountRequestDTO;
 import com.bank.data.AccountResponseDTO;
 import com.bank.mapper.AccountMapper;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.util.NoSuchElementException;
 
 @Component
+@Validated
 public class AccountHandler {
     private final FindAllAccountsUseCase findAllAccountsUseCase;
 
@@ -32,15 +35,23 @@ public class AccountHandler {
     }
 
     public Flux<AccountResponseDTO> findAllAccounts() {
-        return findAllAccountsUseCase.apply().map(AccountMapper::toDTO);
+        return findAllAccountsUseCase.apply()
+                .map(AccountMapper::toDTO)
+                .switchIfEmpty(Mono.error(new NoSuchElementException("No accounts to list.")));
     }
 
     public Mono<AccountResponseDTO> findAccountById(String id) {
-        return findAccountByIdUseCase.apply(id).map(AccountMapper::toDTO);
+        if (id == null || id.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("Id cannot be null."));
+        }
+        return findAccountByIdUseCase.apply(id)
+                .map(AccountMapper::toDTO)
+                .switchIfEmpty(Mono.error(new NoSuchElementException("Account with id " + id + " does not exist.")));
     }
 
-    public Mono<AccountResponseDTO> createAccount(AccountRequestDTO accountRequestDTO) {
+    public Mono<AccountResponseDTO> createAccount(@Valid AccountRequestDTO accountRequestDTO) {
         Account acc = AccountMapper.toEntity(accountRequestDTO);
-        return createAccountUseCase.apply(acc).map(AccountMapper::toDTO);
+        return createAccountUseCase.apply(acc)
+                .map(AccountMapper::toDTO);
     }
 }
