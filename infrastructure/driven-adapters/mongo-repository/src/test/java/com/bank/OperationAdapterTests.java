@@ -28,14 +28,14 @@ public class OperationAdapterTests {
 
     @Test
     public void SaveAndFindByIdOK() {
-        Operation operation = new Operation("123123", BigDecimal.valueOf(500), OperationTypesEnum.ACCOUNT_DEPOSIT, new Account("27afdfd5-"));
+        Operation operation = new Operation("1231235", BigDecimal.valueOf(500), OperationTypesEnum.ACCOUNT_DEPOSIT, new Account("27afdfd5-"));
 
         Mono<Operation> save = operationRepository.createOperation(operation);
 
         StepVerifier.create(save)
                 .assertNext(savedOperation -> {
                     assertThat(savedOperation.getId()).isNotNull();
-                    assertThat(savedOperation.getId()).isEqualTo("123123");
+                    assertThat(savedOperation.getId()).isEqualTo("1231235");
                 })
                 .verifyComplete();
 

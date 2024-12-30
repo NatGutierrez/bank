@@ -1,7 +1,9 @@
 package com.bank.account;
 
 import com.bank.Account;
+import com.bank.appservice.account.FindAllAccountsUseCase;
 import com.bank.gateway.IAccountRepository;
+import com.bank.gateway.IBusMessage;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -16,7 +18,9 @@ public class FindAllUseCaseTests {
         Account account = new Account("123", "test holder", BigDecimal.valueOf(7846));
 
         IAccountRepository accountRepositoryGateway = mock(IAccountRepository.class);
-        FindAllAccountsUseCase findAllAccountsUseCase = new FindAllAccountsUseCase(accountRepositoryGateway);
+        IBusMessage busMessage = mock(IBusMessage.class);
+
+        FindAllAccountsUseCase findAllAccountsUseCase = new FindAllAccountsUseCase(accountRepositoryGateway, busMessage);
 
         when(accountRepositoryGateway.findAllAccounts()).thenReturn(Flux.just(account));
 

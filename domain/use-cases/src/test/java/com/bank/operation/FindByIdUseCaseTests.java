@@ -3,8 +3,8 @@ package com.bank.operation;
 import com.bank.Account;
 import com.bank.Operation;
 import com.bank.OperationTypesEnum;
-import com.bank.account.FindAccountByIdUseCase;
-import com.bank.gateway.IAccountRepository;
+import com.bank.appservice.operation.operation.FindOperationByIdUseCase;
+import com.bank.gateway.IBusMessage;
 import com.bank.gateway.IOperationRepository;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -22,7 +22,9 @@ public class FindByIdUseCaseTests {
         Operation operation = new Operation(id, BigDecimal.valueOf(875), OperationTypesEnum.ACCOUNT_DEPOSIT, new Account("123"));
 
         IOperationRepository operationRepositoryGateway = mock(IOperationRepository.class);
-        FindOperationByIdUseCase findOperationByIdUseCase = new FindOperationByIdUseCase(operationRepositoryGateway);
+        IBusMessage busMessage = mock(IBusMessage.class);
+
+        FindOperationByIdUseCase findOperationByIdUseCase = new FindOperationByIdUseCase(operationRepositoryGateway, busMessage);
 
         when(operationRepositoryGateway.findOperationById(id)).thenReturn(Mono.just(operation));
 

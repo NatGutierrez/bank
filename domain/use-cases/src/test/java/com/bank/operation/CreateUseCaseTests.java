@@ -3,8 +3,8 @@ package com.bank.operation;
 import com.bank.Account;
 import com.bank.Operation;
 import com.bank.OperationTypesEnum;
-import com.bank.account.CreateAccountUseCase;
-import com.bank.gateway.IAccountRepository;
+import com.bank.appservice.operation.operation.CreateOperationUseCase;
+import com.bank.gateway.IBusMessage;
 import com.bank.gateway.IOperationRepository;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -21,7 +21,9 @@ public class CreateUseCaseTests {
         Operation operation = new Operation("12345", BigDecimal.valueOf(875), OperationTypesEnum.ACCOUNT_DEPOSIT, new Account("123"));
 
         IOperationRepository operationRepositoryGateway = mock(IOperationRepository.class);
-        CreateOperationUseCase createOperationUseCase = new CreateOperationUseCase(operationRepositoryGateway);
+        IBusMessage busMessage = mock(IBusMessage.class);
+
+        CreateOperationUseCase createOperationUseCase = new CreateOperationUseCase(operationRepositoryGateway, busMessage);
 
         when(operationRepositoryGateway.createOperation(operation)).thenReturn(Mono.just(operation));
 

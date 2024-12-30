@@ -28,14 +28,14 @@ public class AccountAdapterTests {
 
     @Test
     public void SaveAndFindByIdOK() {
-        Account account = new Account("1234", "test holder", BigDecimal.valueOf(8503));
+        Account account = new Account("1236", "test holder", BigDecimal.valueOf(8503));
 
         Mono<Account> save = accountRepository.createAccount(account);
 
         StepVerifier.create(save)
                 .assertNext(savedAccount -> {
                     assertThat(savedAccount.getId()).isNotNull();
-                    assertThat(savedAccount.getId()).isEqualTo("1234");
+                    assertThat(savedAccount.getId()).isEqualTo("1236");
                 })
                 .verifyComplete();
 
