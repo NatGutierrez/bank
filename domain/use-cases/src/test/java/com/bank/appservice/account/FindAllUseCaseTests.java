@@ -1,10 +1,8 @@
 package com.bank.appservice.account;
 
 import com.bank.Account;
-import com.bank.appservice.account.FindAllAccountsUseCase;
 import com.bank.gateway.IAccountRepository;
 import com.bank.gateway.IBusMessage;
-import com.bank.gateway.ILogRepository;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;

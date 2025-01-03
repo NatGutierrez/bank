@@ -3,7 +3,6 @@ package com.bank.appservice.account;
 import com.bank.Account;
 import com.bank.gateway.IAccountRepository;
 import com.bank.gateway.IBusMessage;
-import com.bank.gateway.ILogRepository;
 import reactor.core.publisher.Flux;
 
 public class FindAllAccountsUseCase {
