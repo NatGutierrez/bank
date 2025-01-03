@@ -34,6 +34,10 @@ allprojects {
 	repositories {
 		mavenCentral()
 	}
+	bootJar {
+		mainClass = 'com.bank.MainApplication'
+		enabled = true
+	}
 
 }
 

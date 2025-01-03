@@ -1,9 +1,9 @@
 package com.bank.handler;
 
 import com.bank.Account;
-import com.bank.account.CreateAccountUseCase;
-import com.bank.account.FindAccountByIdUseCase;
-import com.bank.account.FindAllAccountsUseCase;
+import com.bank.appservice.account.CreateAccountUseCase;
+import com.bank.appservice.account.FindAccountByIdUseCase;
+import com.bank.appservice.account.FindAllAccountsUseCase;
 import com.bank.data.AccountRequestDTO;
 import com.bank.data.AccountResponseDTO;
 import com.bank.mapper.AccountMapper;

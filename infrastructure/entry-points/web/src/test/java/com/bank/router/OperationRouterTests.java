@@ -1,7 +1,6 @@
 package com.bank.router;
 
 import com.bank.OperationTypesEnum;
-import com.bank.data.AccountRequestDTO;
 import com.bank.data.OperationRequestDTO;
 import com.bank.data.OperationResponseDTO;
 import com.bank.handler.OperationHandler;
