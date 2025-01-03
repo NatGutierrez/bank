@@ -1,13 +1,13 @@
-package com.bank.appservice.operation.operation;
+package com.bank.appservice.operation;
 
 import com.bank.Operation;
 import com.bank.gateway.IBusMessage;
+import com.bank.gateway.ILogRepository;
 import com.bank.gateway.IOperationRepository;
 import reactor.core.publisher.Mono;
 
 public class FindOperationByIdUseCase {
     private final IOperationRepository repository;
-
     private final IBusMessage busMessage;
 
     public FindOperationByIdUseCase(IOperationRepository repository, IBusMessage busMessage) {
@@ -16,7 +16,7 @@ public class FindOperationByIdUseCase {
     }
 
     public Mono<Operation> apply(String id) {
-        busMessage.sendMsg("Getting operation by id " + id);
+        busMessage.sendMsg("Getting operation by id " + id + ".");
         return repository.findOperationById(id);
     }
 }

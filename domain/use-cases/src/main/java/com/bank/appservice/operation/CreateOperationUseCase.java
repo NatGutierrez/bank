@@ -1,13 +1,13 @@
-package com.bank.appservice.operation.operation;
+package com.bank.appservice.operation;
 
 import com.bank.Operation;
 import com.bank.gateway.IBusMessage;
+import com.bank.gateway.ILogRepository;
 import com.bank.gateway.IOperationRepository;
 import reactor.core.publisher.Mono;
 
 public class CreateOperationUseCase {
     private final IOperationRepository repository;
-
     private final IBusMessage busMessage;
 
     public CreateOperationUseCase(IOperationRepository repository, IBusMessage busMessage) {
@@ -16,7 +16,7 @@ public class CreateOperationUseCase {
     }
 
     public Mono<Operation> apply(Operation operation) {
-        busMessage.sendMsg("Creating Operation.");
+        busMessage.sendMsg("Creating " + operation.getType().name() + " operation for $" + operation.getValue() + " on account with id " + operation.getAccount().getId() + ".");
         return repository.createOperation(operation);
     }
 }

@@ -1,13 +1,14 @@
 package com.bank.appservice.account;
 
 import com.bank.Account;
+import com.bank.applogs.CreateLogUseCase;
 import com.bank.gateway.IAccountRepository;
 import com.bank.gateway.IBusMessage;
+import com.bank.gateway.ILogRepository;
 import reactor.core.publisher.Mono;
 
 public class CreateAccountUseCase {
     private final IAccountRepository repository;
-
     private final IBusMessage busMessage;
 
     public CreateAccountUseCase(IAccountRepository repository, IBusMessage busMessage) {
@@ -16,7 +17,7 @@ public class CreateAccountUseCase {
     }
 
     public Mono<Account> apply(Account account) {
-        busMessage.sendMsg("Creating account.");
+        busMessage.sendMsg("Creating account for holder " + account.getHolder() + ".");
         return repository.createAccount(account);
     }
 }

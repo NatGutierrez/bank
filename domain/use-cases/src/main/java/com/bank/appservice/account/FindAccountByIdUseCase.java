@@ -3,11 +3,11 @@ package com.bank.appservice.account;
 import com.bank.Account;
 import com.bank.gateway.IAccountRepository;
 import com.bank.gateway.IBusMessage;
+import com.bank.gateway.ILogRepository;
 import reactor.core.publisher.Mono;
 
 public class FindAccountByIdUseCase {
     private final IAccountRepository repository;
-
     private final IBusMessage busMessage;
 
     public FindAccountByIdUseCase(IAccountRepository repository, IBusMessage busMessage) {
@@ -16,7 +16,7 @@ public class FindAccountByIdUseCase {
     }
 
     public Mono<Account> apply(String id) {
-        busMessage.sendMsg("Getting account by id " + id);
+        busMessage.sendMsg("Getting account by id " + id + ".");
         return repository.findAccountById(id);
     }
 }

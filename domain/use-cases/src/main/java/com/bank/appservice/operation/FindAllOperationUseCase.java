@@ -1,13 +1,13 @@
-package com.bank.appservice.operation.operation;
+package com.bank.appservice.operation;
 
 import com.bank.Operation;
 import com.bank.gateway.IBusMessage;
+import com.bank.gateway.ILogRepository;
 import com.bank.gateway.IOperationRepository;
 import reactor.core.publisher.Flux;
 
 public class FindAllOperationUseCase {
     private final IOperationRepository repository;
-
     private final IBusMessage busMessage;
 
     public FindAllOperationUseCase(IOperationRepository repository, IBusMessage busMessage) {

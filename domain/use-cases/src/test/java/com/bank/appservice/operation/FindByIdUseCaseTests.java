@@ -1,16 +1,18 @@
-package com.bank.operation;
+package com.bank.appservice.operation;
 
 import com.bank.Account;
 import com.bank.Operation;
 import com.bank.OperationTypesEnum;
-import com.bank.appservice.operation.operation.FindOperationByIdUseCase;
+import com.bank.appservice.operation.FindOperationByIdUseCase;
 import com.bank.gateway.IBusMessage;
+import com.bank.gateway.ILogRepository;
 import com.bank.gateway.IOperationRepository;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
@@ -18,7 +20,7 @@ import static org.mockito.Mockito.times;
 public class FindByIdUseCaseTests {
     @Test
     void findOperationByIdOK() {
-        String id = "12345";
+        String id = UUID.randomUUID().toString();
         Operation operation = new Operation(id, BigDecimal.valueOf(875), OperationTypesEnum.ACCOUNT_DEPOSIT, new Account("123"));
 
         IOperationRepository operationRepositoryGateway = mock(IOperationRepository.class);

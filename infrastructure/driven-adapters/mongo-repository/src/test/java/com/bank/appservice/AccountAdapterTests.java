@@ -1,6 +1,7 @@
-package com.bank;
+package com.bank.appservice;
 
-import com.bank.data.AccountEntity;
+import com.bank.Account;
+import com.bank.TestConfiguration;
 import com.bank.gateway.IAccountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -28,14 +30,15 @@ public class AccountAdapterTests {
 
     @Test
     public void SaveAndFindByIdOK() {
-        Account account = new Account("1236", "test holder", BigDecimal.valueOf(8503));
+        String id = UUID.randomUUID().toString();
+        Account account = new Account(id, "test holder", BigDecimal.valueOf(8503));
 
         Mono<Account> save = accountRepository.createAccount(account);
 
         StepVerifier.create(save)
                 .assertNext(savedAccount -> {
                     assertThat(savedAccount.getId()).isNotNull();
-                    assertThat(savedAccount.getId()).isEqualTo("1236");
+                    assertThat(savedAccount.getId()).isEqualTo(id);
                 })
                 .verifyComplete();
 
